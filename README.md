@@ -1,1 +1,1 @@
-# blog-single-page-application
+# Blog Single Page Application
