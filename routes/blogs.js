@@ -14,4 +14,19 @@ router.get('/', (req, res) => {
   })
 })
 
+router.post('/', (req, res) => {
+  var collection = db.get('blogs')
+
+  collection.insert({
+    title: req.body.title,
+    author: req.body.author,
+    rating: 0,
+    posts: []
+  }, (err, blog) => {
+    if (err) throw err
+
+    res.json(blog)
+  })
+})
+
 module.exports = router
