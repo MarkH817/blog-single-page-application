@@ -29,4 +29,20 @@ router.post('/', (req, res) => {
   })
 })
 
+router.get('/:id', (req, res) => {
+  var collection = db.get('blogs')
+  collection.findOne({_id: req.params.id}, (err, blog) => {
+    if (err) throw err
+    res.json(blog)
+  })
+})
+
+router.delete('/:id', (req, res) => {
+  var collection = db.get('blogs')
+  collection.remove({_id: req.params.id}, (err, blog) => {
+    if (err) throw err
+    res.json(blog)
+  })
+})
+
 module.exports = router
