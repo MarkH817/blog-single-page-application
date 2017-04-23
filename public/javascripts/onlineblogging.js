@@ -80,13 +80,24 @@ app.controller('DeleteBlogCtrl', ['$scope', '$resource', '$location', '$routePar
   }
 ])
 
-app.controller('ViewBlogCtrl', ['$scope', '$resource', '$routeParams',
-  function ($scope, $resource, $routeParams) {
+app.controller('ViewBlogCtrl', ['$scope', '$resource', '$routeParams', '$http',
+  function ($scope, $resource, $routeParams, $http) {
     var Blogs = $resource('/api/blogs/:blogid')
 
     Blogs.get({blogid: $routeParams.blogid}, function (blog) {
       $scope.blog = blog
     })
+
+    $scope.rateit = function (rating) {
+      $http.put('/api/blogs/' + $routeParams.blogid, {
+        rating: rating
+      })
+      .then((success) => {
+        $scope.blog.rating += rating
+      }, (err) => {
+        throw err
+      })
+    }
   }
 ])
 
@@ -98,8 +109,6 @@ app.controller('AddPostCtrl', ['$scope', '$resource', '$location', '$routeParams
       $scope.blog = blog
 
       $scope.createblogpost = function () {
-        console.log($scope.post)
-
         var BlogsPost = $resource('/api/blogs/' + $scope.blog._id)
         BlogsPost.save($scope.post, function () {
           $location.path('/viewblog/' + $routeParams.blogid)

@@ -71,7 +71,6 @@ router.delete('/:blogid/:postid', (req, res) => {
   }, (err, result) => {
     if (err) throw err
     res.json(result)
-    console.log(result)
   })
 })
 
@@ -80,9 +79,9 @@ router.put('/:blogid', (req, res) => {
   collection.findOne({_id: req.params.blogid}, (err, blog) => {
     if (err) throw err
 
-    collection.update({_id: req.params.blogid}, {
-      rating: (blog.rating + 1)
-    }, (errUpdated, blogUpdated) => {
+    blog.rating = blog.rating + parseInt(req.body.rating)
+
+    collection.update({_id: req.params.blogid}, blog, (errUpdated, blogUpdated) => {
       if (errUpdated) throw errUpdated
       res.json(blogUpdated)
     })
