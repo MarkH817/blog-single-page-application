@@ -9,7 +9,6 @@ router.get('/', (req, res) => {
 
   collection.find({}, (err, blogs) => {
     if (err) throw err
-
     res.json(blogs)
   })
 })
@@ -24,7 +23,6 @@ router.post('/', (req, res) => {
     posts: []
   }, (err, blog) => {
     if (err) throw err
-
     res.json(blog)
   })
 })
@@ -38,8 +36,20 @@ router.get('/:blogid', (req, res) => {
 })
 
 router.post('/:blogid', (req, res) => {
-  // var collection = db.get('blogs')
-  // collection
+  var collection = db.get('blogs')
+  collection.update({_id: req.params.blogid}, {
+    $push: {
+      posts: {
+        postid: Date.now().valueOf(),
+        date: req.body.date,
+        heading: req.body.heading,
+        body: req.body.body
+      }
+    }
+  }, (err, result) => {
+    if (err) throw err
+    res.json(result)
+  })
 })
 
 router.delete('/:blogid', (req, res) => {
@@ -47,6 +57,35 @@ router.delete('/:blogid', (req, res) => {
   collection.remove({_id: req.params.blogid}, (err, blog) => {
     if (err) throw err
     res.json(blog)
+  })
+})
+
+router.delete('/:blogid/:postid', (req, res) => {
+  var collection = db.get('blogs')
+  collection.update({_id: req.params.blogid}, {
+    $pull: {
+      posts: {
+        postid: parseInt(req.params.postid)
+      }
+    }
+  }, (err, result) => {
+    if (err) throw err
+    res.json(result)
+    console.log(result)
+  })
+})
+
+router.put('/:blogid', (req, res) => {
+  var collection = db.get('blogs')
+  collection.findOne({_id: req.params.blogid}, (err, blog) => {
+    if (err) throw err
+
+    collection.update({_id: req.params.blogid}, {
+      rating: (blog.rating + 1)
+    }, (errUpdated, blogUpdated) => {
+      if (errUpdated) throw errUpdated
+      res.json(blogUpdated)
+    })
   })
 })
 

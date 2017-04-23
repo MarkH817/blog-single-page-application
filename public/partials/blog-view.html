@@ -23,9 +23,16 @@
 
 <main>
   <article class="post" ng-repeat="post in blog.posts">
+    <div class="pull-right">
+      <a href="/#/delete-post/{{blog._id}}/{{post.postid}}">
+        <span class="glyphicon glyphicon-remove"></span>
+      </a>
+    </div>
+
     <header>
       <h4>{{post.heading}}</h4>
       <p>{{post.date}}</p>
+
     </header>
 
     <section>
