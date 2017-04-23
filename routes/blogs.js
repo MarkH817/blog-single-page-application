@@ -29,17 +29,22 @@ router.post('/', (req, res) => {
   })
 })
 
-router.get('/:id', (req, res) => {
+router.get('/:blogid', (req, res) => {
   var collection = db.get('blogs')
-  collection.findOne({_id: req.params.id}, (err, blog) => {
+  collection.findOne({_id: req.params.blogid}, (err, blog) => {
     if (err) throw err
     res.json(blog)
   })
 })
 
-router.delete('/:id', (req, res) => {
+router.post('/:blogid', (req, res) => {
+  // var collection = db.get('blogs')
+  // collection
+})
+
+router.delete('/:blogid', (req, res) => {
   var collection = db.get('blogs')
-  collection.remove({_id: req.params.id}, (err, blog) => {
+  collection.remove({_id: req.params.blogid}, (err, blog) => {
     if (err) throw err
     res.json(blog)
   })

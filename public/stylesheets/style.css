@@ -6,3 +6,21 @@ body {
 a {
   color: #00B7FF;
 }
+
+main {
+  margin: 0 auto;
+  max-width: 800px;
+  background-color: rgba(0, 155, 155, 0.15);
+  padding: 1em 0;
+}
+
+.post {
+  margin: 2em auto;
+  max-width: 500px;
+  border-top: .14em solid black;
+  border-bottom: .14em solid black;
+}
+
+.post > * {
+  margin: 1em;
+}

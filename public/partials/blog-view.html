@@ -1,0 +1,35 @@
+<h2>
+  {{blog.title}}
+  <small>
+    Rating:
+
+    [{{blog.rating}}]
+
+    <span class="btn-group btn-group-xs">
+      <button class="btn btn-default" type="button">
+        <span class="glyphicon glyphicon-minus"></span>
+      </button>
+
+      <button class="btn btn-default" type="button">
+        <span class="glyphicon glyphicon-plus"></span>
+      </button>
+    </span>
+  </small>
+</h2>
+
+<p>
+  <a class="btn btn-default" href="/#/add-post/{{blog._id}}">Create a Post</a>
+</p>
+
+<main>
+  <article class="post" ng-repeat="post in blog.posts">
+    <header>
+      <h4>{{post.heading}}</h4>
+      <p>{{post.date}}</p>
+    </header>
+
+    <section>
+      {{post.body}}
+    </section>
+  </article>
+</main>

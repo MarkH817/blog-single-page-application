@@ -1,8 +1,15 @@
 <h3>Blogs</h3>
 
-<ul>
+<p>
+  <a class="btn btn-default" href="#add-blog">Create a Blog</a>
+</p>
+
+<ul class="list-unstyled">
   <li ng-repeat="blog in blogs">
-    {{blog.title}} [{{blog.rating}}]
+    <a href="/#/viewblog/{{blog._id}}">
+      {{blog.title}}
+    </a>
+    [{{blog.rating}}]
     <a href="/#/deleteblog/{{blog._id}}">
       <span class="glyphicon glyphicon-remove"></span>
     </a>

@@ -2,6 +2,10 @@
 
 var app = angular.module('OnlineBlogging', ['ngResource', 'ngRoute'])
 
+app.config(['$locationProvider', ($locationProvider) => {
+  $locationProvider.hashPrefix('')
+}])
+
 app.config(['$routeProvider', ($routeProvider) => {
   $routeProvider
 
@@ -15,15 +19,20 @@ app.config(['$routeProvider', ($routeProvider) => {
     controller: 'AddBlogCtrl'
   })
 
-  .when('/deleteblog/:id', {
+  .when('/deleteblog/:blogid', {
     templateUrl: 'partials/blog-delete.html',
     controller: 'DeleteBlogCtrl'
   })
 
-  // .when('/viewblog/:blogid', {
-  //   templateUrl: '',
-  //   controller: ''
-  // })
+  .when('/viewblog/:blogid', {
+    templateUrl: 'partials/blog-view.html',
+    controller: 'ViewBlogCtrl'
+  })
+
+  .when('/add-post/:blogid', {
+    templateUrl: 'partials/post-form.html',
+    controller: 'AddPostCtrl'
+  })
 
   .otherwise({
     redirectTo: '/'
@@ -40,7 +49,7 @@ app.controller('HomeCtrl', ['$scope', '$resource', function ($scope, $resource) 
 
 app.controller('AddBlogCtrl', ['$scope', '$resource', '$location',
   function ($scope, $resource, $location) {
-    $scope.save = function () {
+    $scope.createblog = function () {
       var Blogs = $resource('/api/blogs')
 
       Blogs.save($scope.blog, function () {
@@ -52,15 +61,37 @@ app.controller('AddBlogCtrl', ['$scope', '$resource', '$location',
 
 app.controller('DeleteBlogCtrl', ['$scope', '$resource', '$location', '$routeParams',
   function ($scope, $resource, $location, $routeParams) {
-    var Blogs = $resource('/api/blogs')
+    var Blogs = $resource('/api/blogs/:blogid')
 
-    Blogs.get({_id: $routeParams.id}, function (blog) {
+    Blogs.get({blogid: $routeParams.blogid}, function (blog) {
       $scope.blog = blog
     })
 
     $scope.delete = function () {
-      Blogs.delete({_id: $routeParams.id}, function (movie) {
+      Blogs.delete({blogid: $routeParams.blogid}, function (blog) {
         $location.path('/')
+      })
+    }
+  }
+])
+
+app.controller('ViewBlogCtrl', ['$scope', '$resource', '$routeParams',
+  function ($scope, $resource, $routeParams) {
+    var Blogs = $resource('/api/blogs/:blogid')
+
+    Blogs.get({blogid: $routeParams.blogid}, function (blog) {
+      $scope.blog = blog
+    })
+  }
+])
+
+app.controller('AddPostCtrl', ['$scope', '$resource', '$location', '$routeParams',
+  function ($scope, $resource, $location, $routeParams) {
+    $scope.createblogpost = function () {
+      var Blogs = $resource('/api/blogs/:blogid')
+
+      Blogs.get({blogid: $routeParams.blogid}, function (blog) {
+        $scope.blog = blog
       })
     }
   }
